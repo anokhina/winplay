@@ -13,21 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ru.org.sevn.audiobookplayer;
+package ru.org.sevn.winplay;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
+import java.io.IOException;
 
-import org.apache.tika.Tika;
+import javax.imageio.ImageIO;
 
-import ru.org.sevn.mp3.Mp3Info;
-import ru.org.sevn.mp3.SevnRawTag;
-import ru.org.sevn.winplay.ListenEmbeddedMediaPlayerComponent;
-import ru.org.sevn.winplay.WinMediaPlayer;
+import ru.org.sevn.audiobookplayer.MMediaPlayer;
+import ru.org.sevn.audiobookplayer.MediaPlayerProxy;
+import uk.co.caprica.vlcj.player.MediaMeta;
+import uk.co.caprica.vlcj.player.MediaPlayerFactory;
 
 public class Mp34Player extends MMediaPlayer {
-	
-	private Tika tika = new Tika();
 	
 	private ListenEmbeddedMediaPlayerComponent mediaPlayerComponent = new ListenEmbeddedMediaPlayerComponent();
 	
@@ -47,23 +47,31 @@ public class Mp34Player extends MMediaPlayer {
     protected void retrieveMediaInfo(File selectedFile) {
     	String title = selectedFile.getName();
     	byte[] image = null;
-		try {
-			String tp = tika.detect(selectedFile); 
-			if (tp.startsWith("audio/mpeg")) {
-				FileInputStream s = new FileInputStream(selectedFile);
-				
-				Mp3Info info = new Mp3Info(s);
-				SevnRawTag ttitle = info.getRawTagOr(SevnRawTag.TAG34_TITLE, SevnRawTag.TAG2_TITLE);
-				if (ttitle != null) {
-					title = ttitle.getDataString();
+    	
+        MediaPlayerFactory factory = mediaPlayerComponent.getMediaPlayerFactory();
+        MediaMeta mediaMeta = factory.getMediaMeta(selectedFile.getAbsolutePath(), true);
+        if (mediaMeta != null) {
+        	String t = mediaMeta.getTitle();
+        	if (t == null || t.trim().length() == 0) {} else {
+        		title = t;
+        	}
+	        final BufferedImage artwork = mediaMeta.getArtwork();
+	        if (artwork != null) {
+	        	ByteArrayOutputStream baos = new ByteArrayOutputStream();
+	        	try {
+					ImageIO.write( artwork, "png", baos );
+		        	baos.flush();
+		        	image = baos.toByteArray();
+		        	baos.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
-				
-				SevnRawTag timage = info.getRawTagOr(SevnRawTag.TAG34_PICTURE, SevnRawTag.TAG2_PICTURE);
-				if (timage != null) {
-					image = timage.getData();
-				}
-			}
-		} catch (Exception e) {}
+	        }
+	
+	        mediaMeta.release();
+        }
+		
 		getAppSettings().setTitle(title);
 		getAppSettings().setImage(image);
     }

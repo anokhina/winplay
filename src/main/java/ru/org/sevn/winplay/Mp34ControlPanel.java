@@ -61,7 +61,6 @@ import ru.org.sevn.audiobookplayer.DirInfo;
 import ru.org.sevn.audiobookplayer.MediaPlayerProxy;
 import ru.org.sevn.audiobookplayer.MediaPlayerProxy.ChangeStateEvent;
 import ru.org.sevn.audiobookplayer.MediaPlayerProxy.ChangeStateListener;
-import ru.org.sevn.audiobookplayer.Mp34Player;
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
 
 public class Mp34ControlPanel extends JPanel {

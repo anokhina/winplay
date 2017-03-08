@@ -45,17 +45,11 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 
-import org.apache.tika.Tika;
-import org.apache.tika.exception.TikaException;
-import org.apache.tika.metadata.Metadata;
-import org.apache.tika.parser.ParseContext;
-import org.apache.tika.parser.mp3.Mp3Parser;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 import ru.org.sevn.audiobookplayer.DirInfo;
-import ru.org.sevn.mp3.Mp3Info;
 import uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent;
 import uk.co.caprica.vlcj.discovery.NativeDiscovery;
 import uk.co.caprica.vlcj.player.MediaMeta;
@@ -253,55 +247,5 @@ public class VideoExample {
         
         mediaPlayerComponent.getMediaPlayer().playMedia(fileName);		
 	}
-	public static void bbb(File selectedFile) throws IOException, SAXException, TikaException {
-		FileInputStream s = new FileInputStream(selectedFile);
-		String tp = new Tika().detect(selectedFile); 
-		if (!tp.startsWith("audio/mpeg")) {
-			throw new IllegalArgumentException("It's not audio/mpeg:" + tp);
-		}
-		
-		Mp3Info info = new Mp3Info(s);
-		System.out.println(info);
-		s.close();
-	}
 	
-	public static void printTags(File selectedFile) {
-		//http://id3.org/id3v2.3.0
-		try {
-
-			InputStream input = new FileInputStream(selectedFile);
-			ContentHandler handler = new DefaultHandler();
-			Metadata metadata = new Metadata();
-			Mp3Parser parser = new Mp3Parser();
-			ParseContext parseCtx = new ParseContext();
-			parser.parse(input, handler, metadata, parseCtx);
-			input.close();
-
-			// List all metadata
-			String[] metadataNames = metadata.names();
-
-			for (String name : metadataNames) {
-				System.out.println(name + ": " + metadata.get(name));
-			}
-
-			// Retrieve the necessary info from metadata
-			// Names - title, xmpDM:artist etc. - mentioned below may differ
-			// based
-			System.out.println("----------------------------------------------");
-			System.out.println("Title: " + metadata.get("title"));
-			System.out.println("Artists: " + metadata.get("xmpDM:artist"));
-			System.out.println("Composer : " + metadata.get("xmpDM:composer"));
-			System.out.println("Genre : " + metadata.get("xmpDM:genre"));
-			System.out.println("Album : " + metadata.get("xmpDM:album"));
-
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (SAXException e) {
-			e.printStackTrace();
-		} catch (TikaException e) {
-			e.printStackTrace();
-		}   		
-	}
 }

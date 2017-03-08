@@ -4,7 +4,7 @@
 
   <groupId>ru.org.sevn</groupId>
   <artifactId>winplay</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>0.0.1-vlcj</version>
   <packaging>jar</packaging>
 
   <name>winplay</name>
@@ -27,11 +27,11 @@
 	    <artifactId>vlcj</artifactId>
 	    <version>3.10.1</version>
 	</dependency>
-	<!-- https://mvnrepository.com/artifact/org.apache.tika/tika-parsers -->
+	<!-- https://mvnrepository.com/artifact/org.json/json -->
 	<dependency>
-	    <groupId>org.apache.tika</groupId>
-	    <artifactId>tika-parsers</artifactId>
-	    <version>1.14</version>
+	    <groupId>org.json</groupId>
+	    <artifactId>json</artifactId>
+	    <version>20160810</version>
 	</dependency>
 	    
   </dependencies>

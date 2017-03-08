@@ -16,26 +16,18 @@
 package ru.org.sevn.winplay;
 
 import java.io.File;
-import java.io.IOException;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.filechooser.FileSystemView;
 import javax.swing.filechooser.FileView;
 
-import org.apache.tika.Tika;
-
 public class ImageFileView extends FileView {
 
-	private Tika tika;
-	
 	private boolean previewInFileList = false;
  
     public void setPreviewInFileList(boolean previewInFileList) {
 		this.previewInFileList = previewInFileList;
-		if (this.previewInFileList && tika == null) {
-			tika = new Tika();
-		}
 	}
 
     public Boolean isTraversable(File f) {
@@ -47,16 +39,9 @@ public class ImageFileView extends FileView {
     public Icon getIcon(File f) {
     	Icon ret = null;
     	if (previewInFileList && !f.isDirectory()) {
-	    	String dt = null;
-	    	try {
-				dt = tika.detect(f);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-	    	
-	    	if (dt != null && dt.startsWith("image")) {
-		    	ret = new ImageIcon(f.getPath());
+    		ImageIcon r = new ImageIcon(f.getPath());
+	    	if (r.getImage() != null) {
+	    		ret = r;
 	    	}
     	}
     	if(ret == null && FileSystemView.getFileSystemView() != null) {
