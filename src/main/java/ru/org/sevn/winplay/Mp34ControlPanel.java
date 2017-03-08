@@ -77,10 +77,18 @@ public class Mp34ControlPanel extends JPanel {
 	}
 	private static class MyJButton extends JButton {
 		public MyJButton(String ttext, Icon i) {
+			this(null, i, ttext);
+		}
+		public MyJButton(String text, Icon i, String ttext) {
 			super(i);
 			setBackground(Color.WHITE);
 			setMargin(new Insets(2, 3, 2, 3));
-			setToolTipText(ttext);
+			if (ttext != null) {
+				setToolTipText(ttext);
+			}
+			if (text != null) {
+				setText(text);
+			}
 		}
 	}
     private JButton fileOpenButton = new MyJButton("File open", Utils.createImageIcon("/drawable/folder_10.png"));
@@ -92,6 +100,7 @@ public class Mp34ControlPanel extends JPanel {
     private JButton backButton = new MyJButton("back", Utils.createImageIcon("/drawable/rewind_1.png"));
     private JButton fwrdButton = new MyJButton("fwrd", Utils.createImageIcon("/drawable/fast_forward_1.png"));
     private JButton firstButton = new MyJButton("first", Utils.createImageIcon("/drawable/back.png"));
+    private JButton fullScreenButton = new MyJButton("F", null, "Fuul screen");
     private JSlider slider = new JSlider(JSlider.HORIZONTAL, 0, 100, 0);
     private JSlider pbarFiles = new JSlider(JSlider.HORIZONTAL, 0, 100, 0);
     private JSlider volume = new JSlider(JSlider.HORIZONTAL, 0, 200, 0);
@@ -193,15 +202,17 @@ public class Mp34ControlPanel extends JPanel {
 		buttons.add(backButton);
 		buttons.add(fwrdButton);
 		buttons.add(nextButton);
+		buttons.add(fullScreenButton);
 		
-		stopButton.addActionListener(e -> {mp34Player.stopPlaying();} );
-		playButton.addActionListener(e -> {mp34Player.resumePlaying();} );
-		pauseButton.addActionListener(e -> {mp34Player.pausePlaying();} );
-		prevButton.addActionListener(e -> {mp34Player.playPrev();} );
-		nextButton.addActionListener(e -> {mp34Player.playNext();} );
-		firstButton.addActionListener(e -> {mp34Player.startPlayingFirst();} );
-		backButton.addActionListener(e -> {mp34Player.seekFromCurrent(-3000);} );
-		fwrdButton.addActionListener(e -> {mp34Player.seekFromCurrent(3000);} );
+		stopButton.addActionListener(e -> {focusPlayer();mp34Player.stopPlaying();} );
+		playButton.addActionListener(e -> {focusPlayer();mp34Player.resumePlaying();} );
+		pauseButton.addActionListener(e -> {focusPlayer();mp34Player.pausePlaying();} );
+		prevButton.addActionListener(e -> {focusPlayer();mp34Player.playPrev();} );
+		nextButton.addActionListener(e -> {focusPlayer();mp34Player.playNext();} );
+		firstButton.addActionListener(e -> {focusPlayer();mp34Player.startPlayingFirst();} );
+		backButton.addActionListener(e -> {focusPlayer();seek(false);} );
+		fwrdButton.addActionListener(e -> {focusPlayer();seek(true);} );
+		fullScreenButton.addActionListener(e -> {focusPlayer(); getMediaPlayerComponent().getMediaPlayer().toggleFullScreen(); } );
 		
         fileOpenButton.addActionListener(new ActionListener() {
 			
@@ -263,6 +274,7 @@ public class Mp34ControlPanel extends JPanel {
 					if (tmpVal >= 0) {
 						int setVal = tmpVal;
 						tmpVal = -1;
+						focusPlayer();
 						mp34Player.getMediaPlayer().seekTo(setVal);
 					}
 				}
@@ -280,6 +292,7 @@ public class Mp34ControlPanel extends JPanel {
 					if (tmpVal >= 0) {
 						int setVal = tmpVal;
 						tmpVal = -1;
+						focusPlayer();
 						mp34Player.playTrack(setVal);
 					}
 				}
@@ -326,11 +339,10 @@ public class Mp34ControlPanel extends JPanel {
 						int setVal = tmpVal;
 						tmpVal = -1;
 						////////////////////////
-						mp34Player.getMediaPlayer().setVolume(setVal);
 //			    		EmbeddedMediaPlayer mp = (EmbeddedMediaPlayer)mp34Player.getMediaPlayer().getMediaPlayer();
 //			    		mp.setVolume(setVal);
-			    		mp34Player.getAppSettings().setVolume(setVal);
-			    		commitSettings();
+						focusPlayer();
+						setVolume(setVal);
 					}
 				}
 			}
@@ -339,6 +351,30 @@ public class Mp34ControlPanel extends JPanel {
         //TODO restore seek
 		mp34Player.restore(mp34Player.getAppSettings().getCopy(), WinDirInfoBitmapLoader.getDefaultLoader());
 
+	}
+	public void incrVolume(int i) {
+		int vol = mp34Player.getMediaPlayer().getVolume();
+		int setVal = vol + i;
+		if (setVal < 0) setVal = 0;
+		if (setVal > 200) setVal = 200;
+		if (setVal != vol) {
+			setVolume(setVal);
+		}
+	}
+	public void setVolume(int setVal) {
+		mp34Player.getMediaPlayer().setVolume(setVal);
+		mp34Player.getAppSettings().setVolume(setVal);
+		commitSettings();
+	}
+	public void seek(boolean forward) {
+		int v = 3000;
+		if (!forward) {
+			v *= -1;
+		}
+		mp34Player.seekFromCurrent(v);
+	}
+	private void focusPlayer() {
+        getMediaPlayerComponent().getVideoSurface().requestFocus();
 	}
     private void showMediaInfo() {
         showLoopState();
@@ -505,7 +541,7 @@ public class Mp34ControlPanel extends JPanel {
     }
     
     public static final Class PREF_CLASS = Mp34ControlPanel.class;
-    public static final String PREF_FILE_NAME = PREF_CLASS.getPackage().getName() + "." + PREF_CLASS.getName() + "_prefs.xml";
+    public static final String PREF_FILE_NAME = PREF_CLASS.getName() + "_prefs.xml";
     
     public void saveSeek(int seek) {
     	if (seek >= 0) {

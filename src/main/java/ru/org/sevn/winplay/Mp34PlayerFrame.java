@@ -142,16 +142,24 @@ public class Mp34PlayerFrame extends JFrame {
         		controlPanel.getMp34Player().playPrev();
         	} else if (e.getKeyCode()==KeyEvent.VK_LEFT) {
         		//getMediaPlayerComponent().getMediaPlayer().skip(-10000);
-        		controlPanel.getMp34Player().seekFromCurrent(-100000);
+        		controlPanel.seek(false);
         	} else if (e.getKeyCode()==KeyEvent.VK_RIGHT) {
         		//getMediaPlayerComponent().getMediaPlayer().skip(10000);
-        		controlPanel.getMp34Player().seekFromCurrent(100000);
+        		controlPanel.seek(true);
 //        	} else if (e.getKeyCode()==KeyEvent.VK_HOME) {
 //        		getMediaPlayerComponent().getMediaPlayer().setPosition(0);
 //        	} else if (e.getKeyCode()==KeyEvent.VK_END) {
 //        		getMediaPlayerComponent().getMediaPlayer().setPosition(1);
+        	} else if (e.getKeyCode()==KeyEvent.VK_ESCAPE) {
+        		if (getMediaPlayerComponent().getMediaPlayer().isFullScreen()) {
+            		getMediaPlayerComponent().getMediaPlayer().toggleFullScreen();
+        		}
         	} else if (e.getKeyCode()==KeyEvent.VK_F) {
         		getMediaPlayerComponent().getMediaPlayer().toggleFullScreen();
+        	} else if (e.getKeyCode()==KeyEvent.VK_UP) {
+        		controlPanel.incrVolume(10);
+        	} else if (e.getKeyCode()==KeyEvent.VK_DOWN) {
+        		controlPanel.incrVolume(-10);
         	}
         }        	
 		
