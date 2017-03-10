@@ -31,6 +31,10 @@ public class Mp34Player extends MMediaPlayer {
 	
 	private ListenEmbeddedMediaPlayerComponent mediaPlayerComponent = new ListenEmbeddedMediaPlayerComponent();
 	
+	public Mp34Player() {
+		mediaPlayerComponent.setCursorEnabled(false);
+	}
+	
     public ListenEmbeddedMediaPlayerComponent getMediaPlayerComponent() {
 		return mediaPlayerComponent;
 	}

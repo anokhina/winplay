@@ -333,6 +333,7 @@ public class Mp34ControlPanel extends JPanel {
 			public void stateChanged(ChangeEvent e) {
 				if (volume.getValueIsAdjusting()) {
 					tmpVal = volume.getValue();
+					mp34Player.getMediaPlayer().setVolume(tmpVal);
 				} else {
 					if (tmpVal >= 0) {
 						int setVal = tmpVal;
