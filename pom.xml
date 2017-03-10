@@ -4,7 +4,7 @@
 
   <groupId>ru.org.sevn</groupId>
   <artifactId>winplay</artifactId>
-  <version>vlcj-170310.2350</version>
+  <version>vlcj-${maven.build.timestamp}</version>
   <packaging>jar</packaging>
 
   <name>winplay</name>
@@ -13,6 +13,10 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
+        
+   <timestamp>${maven.build.timestamp}</timestamp>
+   <maven.build.timestamp.format>yyMMdd.HHmm</maven.build.timestamp.format>
+        
   </properties>
 
   <dependencies>
@@ -57,7 +61,7 @@
       <descriptorRefs>
         <descriptorRef>jar-with-dependencies</descriptorRef>
       </descriptorRefs>
-        <finalName>${project.artifactId}-${project.version}-full</finalName>
+        <finalName>${project.artifactId}-vlcj-${timestamp}-full</finalName>
         <appendAssemblyId>false</appendAssemblyId>      
     </configuration>
   </plugin>   
