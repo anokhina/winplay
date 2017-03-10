@@ -123,10 +123,25 @@ public class Mp34ControlPanel extends JPanel {
 
 	private final String controlName;
 	
+	private JPanel setBg(JPanel p, String str) {
+		int delim = 255;
+		if (str != null && str.length() > 0 ) {
+			int hc = str.hashCode();
+			if (hc < 0) hc *= -1;
+			int b = hc % delim;
+			hc = hc / delim;
+			int g = hc % delim;
+			hc = hc / delim;
+			int r = hc % delim;
+			p.setBackground(new Color(r, g, b));
+		}
+		return p;
+	}
+	
 	public Mp34ControlPanel(String controlName, Mp34Player cmp) {
 		super(new BorderLayout());
 		this.controlName = controlName;
-		JPanel buttons = new JPanel(new FlowLayout());
+		JPanel buttons = setBg(new JPanel(new FlowLayout()), controlName);
 		this.add(slider, BorderLayout.NORTH);
 		JPanel center = new JPanel(new BorderLayout());
 		add(center, BorderLayout.CENTER);
