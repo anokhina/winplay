@@ -4,7 +4,7 @@
 
   <groupId>ru.org.sevn</groupId>
   <artifactId>winplay</artifactId>
-  <version>0.0.1-vlcj</version>
+  <version>vlcj-170310.2350</version>
   <packaging>jar</packaging>
 
   <name>winplay</name>
@@ -57,6 +57,8 @@
       <descriptorRefs>
         <descriptorRef>jar-with-dependencies</descriptorRef>
       </descriptorRefs>
+        <finalName>${project.artifactId}-${project.version}-full</finalName>
+        <appendAssemblyId>false</appendAssemblyId>      
     </configuration>
   </plugin>   
   </plugins>

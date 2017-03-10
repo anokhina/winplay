@@ -44,7 +44,8 @@ public abstract class MMediaPlayer implements ChangeStateListener {
             if (nfl.isDirectory()) {
             	return (nfl.canRead());
             }
-            if (filename.matches("(?i).*\\.mp[34]")) {
+//TODO fix me
+            if (filename.matches("(?i).*\\.mp[34]") || filename.matches("(?i).*\\.avi")) {
                 if (!nfl.isDirectory()) {
                     return (nfl.canRead());
                 }

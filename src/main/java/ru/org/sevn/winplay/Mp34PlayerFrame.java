@@ -33,11 +33,16 @@ import uk.co.caprica.vlcj.discovery.NativeDiscovery;
 import uk.co.caprica.vlcj.player.embedded.DefaultAdaptiveRuntimeFullScreenStrategy;
 
 public class Mp34PlayerFrame extends JFrame {
-	public static void runMain() {
+	
+	public static void runMain(final String controlName) {
 		new NativeDiscovery().discover();
+		runMain(new Mp34ControlPanel(controlName, new Mp34Player()));
+	}
+	
+	private static void runMain(final Mp34ControlPanel controlPanel) {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				Mp34PlayerFrame frame = new Mp34PlayerFrame("Title", new Mp34ControlPanel(new Mp34Player()));
+				Mp34PlayerFrame frame = new Mp34PlayerFrame("Title", controlPanel);
 				frame.showFrame();
 			}
 		});

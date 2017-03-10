@@ -20,8 +20,23 @@ package ru.org.sevn.winplay;
 public class App {
     public static void main( String[] args ) throws Exception {
 //    	VideoExample.artwork();
-        Mp34PlayerFrame.runMain();
+    	String profile = "";
+    	if (args.length > 0) {
+    		profile = normalizeFileName(args[0]);
+    	}
+		Mp34PlayerFrame.runMain(profile);
 //        NativeLibrary.addSearchPath(RuntimeUtil.getLibVlcLibraryName(), LIB_PATH_LOC);
 //        System.out.println(LibVlc.INSTANCE.libvlc_get_version());
     }
+    
+	private static final String[] FORBIDDEN = new String[] {
+			" ", "#", "<", "$", "+", "%", ">", "!", "`", "&", "*","“", "|", "{", "?", "”", "=", "}", "/", ":", "\\", "@", "\"", "'"
+	};
+	
+	public static String normalizeFileName(String n) {
+		for (String s : FORBIDDEN) {
+			n = n.replace(s, "_");
+		}
+		return n;
+	}
 }

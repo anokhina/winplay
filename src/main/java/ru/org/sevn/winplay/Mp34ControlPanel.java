@@ -64,6 +64,7 @@ import ru.org.sevn.audiobookplayer.MediaPlayerProxy.ChangeStateListener;
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
 
 public class Mp34ControlPanel extends JPanel {
+	
 	private static class MyJFileChooser extends JFileChooser {
 		public MyJFileChooser() {
 			try {
@@ -120,8 +121,11 @@ public class Mp34ControlPanel extends JPanel {
 		return mp34Player;
 	}
 
-	public Mp34ControlPanel(Mp34Player cmp) {
+	private final String controlName;
+	
+	public Mp34ControlPanel(String controlName, Mp34Player cmp) {
 		super(new BorderLayout());
+		this.controlName = controlName;
 		JPanel buttons = new JPanel(new FlowLayout());
 		this.add(slider, BorderLayout.NORTH);
 		JPanel center = new JPanel(new BorderLayout());
@@ -496,9 +500,17 @@ public class Mp34ControlPanel extends JPanel {
     	commitSettings();
     }
     
+    protected String getSettingsNode() {
+    	return this.getClass().getName()+controlName;
+    }
+    
+    protected String getSettingsFileName() {
+    	return getSettingsNode() + "_prefs.xml";
+    }
+    
     public synchronized void commitSettings() {
     	try {
-			commit(PREF_FILE_NAME, prefs.getWrapped());
+			commit(getSettingsFileName(), prefs.getWrapped());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -509,9 +521,9 @@ public class Mp34ControlPanel extends JPanel {
     }
     
     public void restoreSettings() {
-    	prefs = new WinEditorWrapper(Preferences.userRoot().node(this.getClass().getName()));
+    	prefs = new WinEditorWrapper(Preferences.userRoot().node(getSettingsNode()));
     	try {
-			restore(PREF_FILE_NAME, prefs.getWrapped());
+			restore(getSettingsFileName(), prefs.getWrapped());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -539,9 +551,6 @@ public class Mp34ControlPanel extends JPanel {
         	os.close();
         }
     }
-    
-    public static final Class PREF_CLASS = Mp34ControlPanel.class;
-    public static final String PREF_FILE_NAME = PREF_CLASS.getName() + "_prefs.xml";
     
     public void saveSeek(int seek) {
     	if (seek >= 0) {
