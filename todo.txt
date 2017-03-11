@@ -1,4 +1,2 @@
-open valid book
-open book with no files
-last played book has wrong settings now
+update cover from video
 
