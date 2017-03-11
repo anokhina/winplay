@@ -1,2 +1,3 @@
-update cover from video
-
+store history in db
+find in the history
+index media from specified dir
