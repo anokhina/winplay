@@ -177,6 +177,9 @@ public class WinMediaPlayer extends MediaPlayerProxy<EmbeddedMediaPlayer, String
             mediaPlayer.prepareMedia(dataSource);
             super.prepare(dataSource);
         } catch (Exception e) {
+            if (dataSource == null) {
+                super.prepare(dataSource);
+            }
             fireEvent(STATE.ERROR, new CantPlayException(dataSource, e));
         }
     }

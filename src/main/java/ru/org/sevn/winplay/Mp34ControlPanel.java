@@ -449,10 +449,10 @@ public class Mp34ControlPanel extends JPanel {
     		ImageIcon icon = (ImageIcon)mp34Player.getAppSettings().getLastBook().getDirInfo().getBitmapContainer().getBitmap();
     		imagePreview.setImageIcon(icon);
     		//imagePreview.getLabel().setText(mp34Player.getAppSettings().getTitle());
-    		imagePreview.repaint();
     	} catch (Exception e) {
     		e.printStackTrace(System.err);
     	}
+		imagePreview.repaint();
     }
     
     private void showTitle() {

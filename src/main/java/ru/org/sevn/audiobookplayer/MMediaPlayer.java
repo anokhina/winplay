@@ -156,6 +156,8 @@ public abstract class MMediaPlayer implements ChangeStateListener {
 	        	} else {
 	            	getAppSettings().lastBook(null, bloader);
 	        	}
+	        } else {
+            	getAppSettings().lastBook(null, bloader);
 	        }
 	        
 	        BookInfo bi = getAppSettings().getLastBook();
@@ -236,10 +238,7 @@ public abstract class MMediaPlayer implements ChangeStateListener {
         return startPlaying(autoPlayRun);
     }
     private boolean startPlaying(Runnable aPlay) {
-        if (getFilesLength() > 0) {
-            return playNext(aPlay);
-        }
-        return false;        
+        return playNext(aPlay);
     }
     
     private Runnable getAutoPlayRun() {
@@ -296,7 +295,7 @@ public abstract class MMediaPlayer implements ChangeStateListener {
         if (playingFileIdx >=0 && playingFileIdx < getFilesLength()) {
             return play(files[playingFileIdx], aPlay);
         }
-        return false;
+        return play(null, aPlay);
     }
     
     public synchronized void initialize() {
@@ -357,6 +356,11 @@ public abstract class MMediaPlayer implements ChangeStateListener {
                 return true;
             } catch (Exception e) {
             }
+        } else {
+            getAppSettings().setPlayingName(null);
+            getAppSettings().setTitle(null);
+            toRunOnPrepare = aPlay;
+            mediaPlayer.prepare(null);
         }
         return false;
     }

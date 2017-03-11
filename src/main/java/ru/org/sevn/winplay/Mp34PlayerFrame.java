@@ -122,7 +122,7 @@ public class Mp34PlayerFrame extends JFrame {
     	if (ii != null) {
     		setIconImage(ii.getImage());
     	}
-    	setTitle("Media Book Player - " + this.controlPanel);
+    	setTitle("Media Book Player - " + this.controlPanel.getControlName());
 	}
 	
 	public void showFrame() {
