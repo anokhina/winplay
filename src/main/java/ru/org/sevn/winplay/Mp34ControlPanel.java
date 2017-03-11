@@ -123,17 +123,14 @@ public class Mp34ControlPanel extends JPanel {
 
 	private final String controlName;
 	
+	public String getControlName() {
+		return controlName;
+	}
+
 	private JPanel setBg(JPanel p, String str) {
-		int delim = 255;
-		if (str != null && str.length() > 0 ) {
-			int hc = str.hashCode();
-			if (hc < 0) hc *= -1;
-			int b = hc % delim;
-			hc = hc / delim;
-			int g = hc % delim;
-			hc = hc / delim;
-			int r = hc % delim;
-			p.setBackground(new Color(r, g, b));
+		Color bg = Utils.getColorByString(str, null);
+		if (bg != null) {
+			p.setBackground(bg);
 		}
 		return p;
 	}

@@ -16,6 +16,7 @@
 package ru.org.sevn.winplay;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
@@ -117,11 +118,11 @@ public class Mp34PlayerFrame extends JFrame {
     	executor = Executors.newSingleThreadScheduledExecutor();
     	executor.scheduleAtFixedRate(playingRun, this.delayMillis, this.delayMillis, TimeUnit.MILLISECONDS);
     	
-    	ImageIcon ii = Utils.createImageIcon("/drawable/ic_launcher.png");
+    	ImageIcon ii = Utils.imageWithBackground(Utils.createImageIcon("/drawable/ic_launcher.png"), Utils.getColorByString(controlPanel.getControlName(), null));
     	if (ii != null) {
     		setIconImage(ii.getImage());
     	}
-    	setTitle("Media Book Player");
+    	setTitle("Media Book Player - " + this.controlPanel);
 	}
 	
 	public void showFrame() {
