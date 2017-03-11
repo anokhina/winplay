@@ -141,11 +141,11 @@ public class WinMediaPlayer extends MediaPlayerProxy<EmbeddedMediaPlayer, String
 
     @Override
     public synchronized void start() {
-    	start(-1);
+    	start(-1, false);
     }
     
     @Override
-    public synchronized void start(final int seek) {
+    public synchronized void start(final int seek, final boolean paused) {
         if (isPrepared()) {
         	SwingUtilities.invokeLater(new Runnable(){
 				public void run() {
@@ -153,12 +153,16 @@ public class WinMediaPlayer extends MediaPlayerProxy<EmbeddedMediaPlayer, String
 		        	if (seek >= 0) {
 		        		getMediaPlayer().setTime(seek);
 		        	}
+		        	if (paused) {
+		        		getMediaPlayer().pause();
+		        	}
+		        	if (seek >= 0) {
+		        		WinMediaPlayer.super.start(seek, paused);
+		        	} else {
+		        		WinMediaPlayer.super.start();
+		        	}
+		        	
 				}});
-        	if (seek >= 0) {
-        		super.start(seek);
-        	} else {
-        		super.start();
-        	}
             if (executor == null) {
             	executor = Executors.newSingleThreadScheduledExecutor();
             	executor.scheduleAtFixedRate(playingRun, this.delayMillis, this.delayMillis, TimeUnit.MILLISECONDS);

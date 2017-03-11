@@ -127,8 +127,12 @@ public abstract class MediaPlayerProxy<MEDIAPLAYER, DATASOURCE> {
 
     public abstract int getVolume();
     
-    public void start(int seek) {
-        fireEvent(STATE.START);
+    public void start(int seek, boolean paused) {
+    	if (paused) {
+    		fireEvent(STATE.PAUSE);
+    	} else {
+    		fireEvent(STATE.START);
+    	}
         fireEvent(STATE.SEEK, seek);
     }
     public void start() {

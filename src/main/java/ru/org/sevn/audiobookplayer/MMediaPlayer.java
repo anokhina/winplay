@@ -85,7 +85,7 @@ public abstract class MMediaPlayer implements ChangeStateListener {
                     public void run() {
                         mediaPlayer.seekTo(seek);
                         mediaPlayer.setVolume(vol);
-                        toRunOnComplete = completePlayRun;
+                        noPlayRun.run();
                     }
                 }, bloader);
             } else {
@@ -97,7 +97,7 @@ public abstract class MMediaPlayer implements ChangeStateListener {
 							
 							@Override
 							public void run() {
-								autoPlayRun.run();
+								noPlayRun.run();
 		                        mediaPlayer.setVolume(vol);
 							}
 						});
@@ -173,7 +173,7 @@ public abstract class MMediaPlayer implements ChangeStateListener {
 	        ComplexRunnable seekAndRun = new ComplexRunnable(new Runnable[]{
 	        		new Runnable() {
 	        			public void run() {
-	        				mediaPlayer.start(seek);
+	        				mediaPlayer.start(seek, true);
 	        			}
 	        		},
 	        		runnable});
@@ -368,7 +368,7 @@ public abstract class MMediaPlayer implements ChangeStateListener {
     public synchronized boolean resumePlaying() {
         if (mediaPlayer != null) {
             if (!mediaPlayer.isPlaying()) {
-                mediaPlayer.start(mediaPlayer.getCurrentPosition());
+                mediaPlayer.start(mediaPlayer.getCurrentPosition(), false);
                 return true;
             }
         }

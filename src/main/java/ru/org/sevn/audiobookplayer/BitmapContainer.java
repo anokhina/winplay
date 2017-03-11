@@ -22,6 +22,7 @@ public class BitmapContainer<T> {
 	private File file;
 	public BitmapContainer(T obj, File file) {
 		this.bitmap = obj;
+		this.file = file;
 	}
 	public T getBitmap() {
 		return bitmap;

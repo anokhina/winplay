@@ -39,6 +39,16 @@ public class Utils {
         }
         return ext;
     }
+    public static String getBaseName(File f) {
+        String s = f.getName();
+        String ext = s;
+        int i = s.lastIndexOf('.');
+ 
+        if (i > 0 &&  i < s.length() - 1) {
+            ext = s.substring(0, i);
+        }
+        return ext;
+    }
  
     public static ImageIcon createImageIcon(String path) {
         java.net.URL imgURL = Utils.class.getResource(path);

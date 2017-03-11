@@ -34,6 +34,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.Map;
 import java.util.Set;
 import java.util.prefs.BackingStoreException;
@@ -44,6 +46,7 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
@@ -57,6 +60,7 @@ import javax.swing.plaf.basic.BasicSliderUI;
 import ru.org.sevn.audiobookplayer.AppSettings;
 import ru.org.sevn.audiobookplayer.AppSettings.EditorWrapper;
 import ru.org.sevn.audiobookplayer.AppSettings.SharedPreferencesWrapper;
+import ru.org.sevn.audiobookplayer.BookInfo;
 import ru.org.sevn.audiobookplayer.DirInfo;
 import ru.org.sevn.audiobookplayer.MediaPlayerProxy;
 import ru.org.sevn.audiobookplayer.MediaPlayerProxy.ChangeStateEvent;
@@ -101,6 +105,7 @@ public class Mp34ControlPanel extends JPanel {
     private JButton fwrdButton = new MyJButton("fwrd", Utils.createImageIcon("/drawable/fast_forward_1.png"));
     private JButton firstButton = new MyJButton("first", Utils.createImageIcon("/drawable/back.png"));
     private JButton fullScreenButton = new MyJButton("F", null, "Fuul screen");
+    private JButton updateCoverButton = new MyJButton("C", null, "Update cover");
     private JSlider slider = new JSlider(JSlider.HORIZONTAL, 0, 100, 0);
     private JSlider pbarFiles = new JSlider(JSlider.HORIZONTAL, 0, 100, 0);
     private JSlider volume = new JSlider(JSlider.HORIZONTAL, 0, 200, 0);
@@ -218,6 +223,8 @@ public class Mp34ControlPanel extends JPanel {
 		buttons.add(fwrdButton);
 		buttons.add(nextButton);
 		buttons.add(fullScreenButton);
+		buttons.add(new JLabel("      "));
+		buttons.add(updateCoverButton);
 		
 		stopButton.addActionListener(e -> {focusPlayer();mp34Player.stopPlaying();} );
 		playButton.addActionListener(e -> {focusPlayer();mp34Player.resumePlaying();} );
@@ -228,6 +235,7 @@ public class Mp34ControlPanel extends JPanel {
 		backButton.addActionListener(e -> {focusPlayer();seek(false);} );
 		fwrdButton.addActionListener(e -> {focusPlayer();seek(true);} );
 		fullScreenButton.addActionListener(e -> {focusPlayer(); getMediaPlayerComponent().getMediaPlayer().toggleFullScreen(); } );
+		updateCoverButton.addActionListener(e -> {focusPlayer(); updateCover();});
 		
         fileOpenButton.addActionListener(new ActionListener() {
 			
@@ -463,6 +471,38 @@ public class Mp34ControlPanel extends JPanel {
 //            if (title == null) { title = ""; }
 //            tv.setText(getMp3Player().getAppSettings().getCharsetName()+": "+title);
 //        }
+    }
+    
+    private void updateCover() {
+    	BookInfo bi = mp34Player.getAppSettings().getLastBook();
+    	if (bi != null) {
+    		File fl = bi.getDirInfo().getBitmapContainer().getFile();
+    		if (fl != null) {
+    			try {
+					updateCover(fl);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+    			bi.getDirInfo().refresh(WinDirInfoBitmapLoader.getDefaultLoader());
+    	        showImage();
+    		}
+    	}
+    }
+    private void updateCover(File file) throws IOException {
+    	//https://github.com/caprica/vlcj/blob/master/src/test/java/uk/co/caprica/vlcj/test/snapshot/SnapshotTest.java
+    	File savedFile = null;
+    	boolean saved = false;
+    	if (file.exists()) {
+    		savedFile = File.createTempFile(Utils.getBaseName(file), "."+Utils.getExtension(file), file.getParentFile());
+    		Files.move(file.toPath(), savedFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+    		saved = savedFile.exists();
+    	}
+    	if (saved) {
+	    	if (!getMediaPlayerComponent().getMediaPlayer().saveSnapshot(file) && savedFile != null) {
+	    		savedFile.renameTo(file);
+	    	}
+    	}
     }
     
     synchronized void showInfo() {
