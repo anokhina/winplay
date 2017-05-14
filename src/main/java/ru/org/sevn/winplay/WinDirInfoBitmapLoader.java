@@ -21,11 +21,12 @@ import javax.swing.ImageIcon;
 
 import ru.org.sevn.audiobookplayer.BitmapContainer;
 import ru.org.sevn.audiobookplayer.BitmapLoader;
+import ru.org.sevn.utilwt.ImageUtil;
 
 public class WinDirInfoBitmapLoader extends BitmapLoader<ImageIcon>{
 
 	public static final BitmapContainer<ImageIcon> DEFAULT_ICON = 
-			new BitmapContainer<ImageIcon>(Utils.createImageIcon("/drawable/picture.png"), null);
+			new BitmapContainer<ImageIcon>(ImageUtil.createImageIcon("/drawable/picture.png", WinDirInfoBitmapLoader.class), null);
 	@Override
 	public BitmapContainer<ImageIcon> decodeFile(File file) {
         return new BitmapContainer(new ImageIcon(file.getPath()), file);
@@ -42,7 +43,7 @@ public class WinDirInfoBitmapLoader extends BitmapLoader<ImageIcon>{
 	}
 	@Override
 	public BitmapContainer<ImageIcon> getScaledImage(BitmapContainer<ImageIcon> image, int w, int h, float multiplier) {
-		return new BitmapContainer(Utils.getScaledIcon(image.getBitmap(), w, h, false), image.getFile());
+		return new BitmapContainer(ImageUtil.getScaledIcon(image.getBitmap(), w, h, false), image.getFile());
 	}
 	@Override
 	public BitmapContainer<ImageIcon> getDefaultBitmap() {

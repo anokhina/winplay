@@ -30,6 +30,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+import ru.org.sevn.utilwt.ColorUtil;
+import ru.org.sevn.utilwt.ImageUtil;
 import uk.co.caprica.vlcj.discovery.NativeDiscovery;
 import uk.co.caprica.vlcj.player.embedded.DefaultAdaptiveRuntimeFullScreenStrategy;
 
@@ -118,7 +120,7 @@ public class Mp34PlayerFrame extends JFrame {
     	executor = Executors.newSingleThreadScheduledExecutor();
     	executor.scheduleAtFixedRate(playingRun, this.delayMillis, this.delayMillis, TimeUnit.MILLISECONDS);
     	
-    	ImageIcon ii = Utils.imageWithBackground(Utils.createImageIcon("/drawable/ic_launcher.png"), Utils.getColorByString(controlPanel.getControlName(), null));
+    	ImageIcon ii = ImageUtil.imageWithBackground(ImageUtil.createImageIcon("/drawable/ic_launcher.png", Mp34PlayerFrame.class), ColorUtil.getColorByString(controlPanel.getControlName(), null));
     	if (ii != null) {
     		setIconImage(ii.getImage());
     	}

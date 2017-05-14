@@ -31,6 +31,7 @@ import javax.swing.ListSelectionModel;
 
 import ru.org.sevn.audiobookplayer.BookInfo;
 import ru.org.sevn.audiobookplayer.DirInfo;
+import ru.org.sevn.utilwt.ImageUtil;
 
 public class BookPreview extends FileChooserImagePreview {
 
@@ -68,7 +69,7 @@ public class BookPreview extends FileChooserImagePreview {
 	    		label.setMinimumSize(new Dimension(wh, wh));
 		    	label.setText(bi.getDirInfo().getBookDir().getParentFile().getName());
 		    	label.setToolTipText(bi.getDirInfo().getBookDir().getAbsolutePath());
-	    		label.setIcon(Utils.getStretchedImageIcon(getAnyIcon((ImageIcon)bi.getDirInfo().getBitmap()), wh, wh, true));
+	    		label.setIcon(ImageUtil.getStretchedImageIcon(getAnyIcon((ImageIcon)bi.getDirInfo().getBitmap()), wh, wh, true));
 	    	} catch (Exception e) {
 	    		e.printStackTrace(System.err);
 	    	}

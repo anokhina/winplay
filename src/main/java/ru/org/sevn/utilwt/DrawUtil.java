@@ -13,8 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
-package ru.org.sevn.winplay;
+package ru.org.sevn.utilwt;
 
-public class Utils {
- 
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics2D;
+
+public class DrawUtil {
+    public static void drawString(Graphics2D ig2, String message, Font font, Color fg, int width, int height) {
+        //Font font = new Font("TimesRoman", Font.BOLD, 20);
+        ig2.setFont(font);
+        FontMetrics fontMetrics = ig2.getFontMetrics();
+        int stringWidth = fontMetrics.stringWidth(message);
+        int stringHeight = fontMetrics.getAscent();
+        ig2.setPaint(fg);
+        ig2.drawString(message, (width - stringWidth) / 2, height / 2 + stringHeight / 4);
+    }
 }

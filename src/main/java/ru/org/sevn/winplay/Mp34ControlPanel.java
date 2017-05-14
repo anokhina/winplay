@@ -21,7 +21,6 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
@@ -42,7 +41,6 @@ import java.util.prefs.BackingStoreException;
 import java.util.prefs.InvalidPreferencesFormatException;
 import java.util.prefs.Preferences;
 
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -65,6 +63,11 @@ import ru.org.sevn.audiobookplayer.DirInfo;
 import ru.org.sevn.audiobookplayer.MediaPlayerProxy;
 import ru.org.sevn.audiobookplayer.MediaPlayerProxy.ChangeStateEvent;
 import ru.org.sevn.audiobookplayer.MediaPlayerProxy.ChangeStateListener;
+import ru.org.sevn.util.FileUtil;
+import ru.org.sevn.utilwt.ColorUtil;
+import ru.org.sevn.utilwt.ImagePreview;
+import ru.org.sevn.utilwt.ImageUtil;
+import ru.org.sevn.utilwt.TTextButton;
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
 
 public class Mp34ControlPanel extends JPanel {
@@ -79,33 +82,17 @@ public class Mp34ControlPanel extends JPanel {
 			SwingUtilities.updateComponentTreeUI(this);
 		}
 	}
-	private static class MyJButton extends JButton {
-		public MyJButton(String ttext, Icon i) {
-			this(null, i, ttext);
-		}
-		public MyJButton(String text, Icon i, String ttext) {
-			super(i);
-			setBackground(Color.WHITE);
-			setMargin(new Insets(2, 3, 2, 3));
-			if (ttext != null) {
-				setToolTipText(ttext);
-			}
-			if (text != null) {
-				setText(text);
-			}
-		}
-	}
-    private JButton fileOpenButton = new MyJButton("File open", Utils.createImageIcon("/drawable/folder_10.png"));
-    private JButton playButton = new MyJButton("Play", Utils.createImageIcon("/drawable/play_button_1.png"));
-    private JButton pauseButton = new MyJButton("Pause", Utils.createImageIcon("/drawable/pause_1.png"));
-    private JButton stopButton = new MyJButton("STOP", Utils.createImageIcon("/drawable/stop.png"));
-    private JButton prevButton = new MyJButton("prev", Utils.createImageIcon("/drawable/previous.png"));
-    private JButton nextButton = new MyJButton("next", Utils.createImageIcon("/drawable/skip.png"));
-    private JButton backButton = new MyJButton("back", Utils.createImageIcon("/drawable/rewind_1.png"));
-    private JButton fwrdButton = new MyJButton("fwrd", Utils.createImageIcon("/drawable/fast_forward_1.png"));
-    private JButton firstButton = new MyJButton("first", Utils.createImageIcon("/drawable/back.png"));
-    private JButton fullScreenButton = new MyJButton("F", null, "Fuul screen");
-    private JButton updateCoverButton = new MyJButton("C", null, "Update cover");
+	private JButton fileOpenButton = new TTextButton("File open", createImageIcon("/drawable/folder_10.png"));
+    private JButton playButton = new TTextButton("Play", createImageIcon("/drawable/play_button_1.png"));
+    private JButton pauseButton = new TTextButton("Pause", createImageIcon("/drawable/pause_1.png"));
+    private JButton stopButton = new TTextButton("STOP", createImageIcon("/drawable/stop.png"));
+    private JButton prevButton = new TTextButton("prev", createImageIcon("/drawable/previous.png"));
+    private JButton nextButton = new TTextButton("next", createImageIcon("/drawable/skip.png"));
+    private JButton backButton = new TTextButton("back", createImageIcon("/drawable/rewind_1.png"));
+    private JButton fwrdButton = new TTextButton("fwrd", createImageIcon("/drawable/fast_forward_1.png"));
+    private JButton firstButton = new TTextButton("first", createImageIcon("/drawable/back.png"));
+    private JButton fullScreenButton = new TTextButton("F", null, "Full screen");
+    private JButton updateCoverButton = new TTextButton("C", null, "Update cover");
     private JSlider slider = new JSlider(JSlider.HORIZONTAL, 0, 100, 0);
     private JSlider pbarFiles = new JSlider(JSlider.HORIZONTAL, 0, 100, 0);
     private JSlider volume = new JSlider(JSlider.HORIZONTAL, 0, 200, 0);
@@ -125,6 +112,10 @@ public class Mp34ControlPanel extends JPanel {
 	public Mp34Player getMp34Player() {
 		return mp34Player;
 	}
+	
+	private ImageIcon createImageIcon(String path) {
+		return ImageUtil.createImageIcon(path, Mp34ControlPanel.class);
+	}
 
 	private final String controlName;
 	
@@ -133,7 +124,7 @@ public class Mp34ControlPanel extends JPanel {
 	}
 
 	private JPanel setBg(JPanel p, String str) {
-		Color bg = Utils.getColorByString(str, null);
+		Color bg = ColorUtil.getColorByString(str, null);
 		if (bg != null) {
 			p.setBackground(bg);
 		}
@@ -494,7 +485,7 @@ public class Mp34ControlPanel extends JPanel {
     	File savedFile = null;
     	boolean saved = false;
     	if (file.exists()) {
-    		savedFile = File.createTempFile(Utils.getBaseName(file), "."+Utils.getExtension(file), file.getParentFile());
+    		savedFile = File.createTempFile(FileUtil.getBaseName(file), "."+FileUtil.getExtension(file), file.getParentFile());
     		Files.move(file.toPath(), savedFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
     		saved = savedFile.exists();
     	}

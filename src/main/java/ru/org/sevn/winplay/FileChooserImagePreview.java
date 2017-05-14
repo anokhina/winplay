@@ -29,6 +29,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.UIManager;
 
+import ru.org.sevn.utilwt.ImageUtil;
+
 public class FileChooserImagePreview extends JPanel implements PropertyChangeListener {
 	private ImageIcon previewImage = null;
 	private File file = null;
@@ -96,7 +98,7 @@ public class FileChooserImagePreview extends JPanel implements PropertyChangeLis
 	}
 	
 	private ImageIcon scaleToView(ImageIcon ii) {
-		return Utils.getScaledImageIcon(ii, previewWidth, previewHeight, false);
+		return ImageUtil.getScaledImageIcon(ii, previewWidth, previewHeight, false);
 	}
 
 	public void propertyChange(PropertyChangeEvent e) {

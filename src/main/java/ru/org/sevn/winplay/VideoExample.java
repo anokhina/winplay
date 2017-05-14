@@ -50,6 +50,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 import ru.org.sevn.audiobookplayer.DirInfo;
+import ru.org.sevn.utilwt.ImageUtil;
 import uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent;
 import uk.co.caprica.vlcj.discovery.NativeDiscovery;
 import uk.co.caprica.vlcj.player.MediaMeta;
@@ -120,7 +121,7 @@ public class VideoExample {
                 }
             };
             JFrame f = new JFrame("vlcj meta artwork");
-            f.setIconImage(Utils.createImageIcon("/drawable/ic_launcher.png").getImage());
+            f.setIconImage(ImageUtil.createImageIcon("/drawable/ic_launcher.png", VideoExample.class).getImage());
             f.setContentPane(cp);
             f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             f.pack();

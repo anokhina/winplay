@@ -13,8 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
-package ru.org.sevn.winplay;
+package ru.org.sevn.util;
 
-public class Utils {
+import java.io.File;
+
+public class FileUtil {
+    public static String getExtension(File f) {
+        String ext = null;
+        String s = f.getName();
+        int i = s.lastIndexOf('.');
  
+        if (i > 0 &&  i < s.length() - 1) {
+            ext = s.substring(i+1).toLowerCase();
+        }
+        return ext;
+    }
+    public static String getBaseName(File f) {
+        String s = f.getName();
+        String ext = s;
+        int i = s.lastIndexOf('.');
+ 
+        if (i > 0 &&  i < s.length() - 1) {
+            ext = s.substring(0, i);
+        }
+        return ext;
+    }
+
 }

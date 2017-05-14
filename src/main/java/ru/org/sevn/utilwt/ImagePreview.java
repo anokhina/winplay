@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
-package ru.org.sevn.winplay;
+package ru.org.sevn.utilwt;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -68,7 +68,7 @@ public class ImagePreview extends JPanel {
 	}
 	
 	private ImageIcon scaleToView(ImageIcon ii) {
-		return Utils.getScaledImageIcon(ii, previewWidth, previewHeight, false);
+		return ImageUtil.getScaledImageIcon(ii, previewWidth, previewHeight, false);
 	}
 
 	private class ImageJComponent extends JComponent {

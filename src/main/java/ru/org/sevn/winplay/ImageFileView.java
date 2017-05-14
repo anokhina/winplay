@@ -22,6 +22,8 @@ import javax.swing.ImageIcon;
 import javax.swing.filechooser.FileSystemView;
 import javax.swing.filechooser.FileView;
 
+import ru.org.sevn.utilwt.ImageUtil;
+
 public class ImageFileView extends FileView {
 
 	private boolean previewInFileList = false;
@@ -50,7 +52,7 @@ public class ImageFileView extends FileView {
     		ret = super.getIcon(f);
     	}
     	if (previewInFileList) {
-    		return Utils.getScaledIcon(ret, ICON_WIDTH, ICON_WIDTH, false);
+    		return ImageUtil.getScaledIcon(ret, ICON_WIDTH, ICON_WIDTH, false);
     	}
     	
     	return ret;

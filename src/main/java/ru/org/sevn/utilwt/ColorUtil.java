@@ -13,8 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
-package ru.org.sevn.winplay;
+package ru.org.sevn.utilwt;
 
-public class Utils {
- 
+import java.awt.Color;
+
+public class ColorUtil {
+    public static Color getColorByString(String str, Color def) {
+		int delim = 255;
+		if (str != null && str.length() > 0 ) {
+			int hc = str.hashCode();
+			if (hc < 0) hc *= -1;
+			int b = hc % delim;
+			hc = hc / delim;
+			int g = hc % delim;
+			hc = hc / delim;
+			int r = hc % delim;
+			return new Color(r, g, b);
+		}
+		return def;
+    }
 }
